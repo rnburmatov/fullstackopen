@@ -6,6 +6,15 @@ const Button = ({handler, text}) => {
   )
 }
 
+const StatLine = ({statValue, statText}) => {
+  return (
+    <tr>
+      <td>{statText}</td>
+      <td>{statValue}</td>
+    </tr>
+  )
+}
+
 const Stats = ({good, neutral, bad}) => {
   const total = good + neutral + bad;
   if (!total) {
@@ -13,14 +22,16 @@ const Stats = ({good, neutral, bad}) => {
   } else {
     return (
       <>
-        <p>Good {good}</p>
-        <p>Neutral {neutral}</p>
-        <p>Bad {bad}</p>
-        <p>All {total}</p>
-        <p>Average {(good + bad * -1) / total}</p>
-        <p>Positive {
-          total > 0 ? good / total : 'Try add feedback'
-        }</p>
+        <table>
+          <tbody>
+            <StatLine statValue={good} statText="Good"/>
+            <StatLine statValue={neutral} statText="Neutral"/>
+            <StatLine statValue={bad} statText="Bad"/>
+            <StatLine statValue={total} statText="All"/>
+            <StatLine statValue={(good + bad * -1) / total} statText="Average"/>
+            <StatLine statValue={total > 0 ? good / total : 0} statText="Positive %"/>
+          </tbody>
+        </table>
       </>
     )
   }
