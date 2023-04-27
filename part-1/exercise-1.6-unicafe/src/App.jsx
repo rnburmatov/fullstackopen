@@ -8,18 +8,22 @@ const Button = ({handler, text}) => {
 
 const Stats = ({good, neutral, bad}) => {
   const total = good + neutral + bad;
-  return (
-    <>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {total}</p>
-      <p>Average {(good + bad * -1) / total}</p>
-      {
-        total > 0 ? good / total : 'Try add feedback'
-      }
-    </>
-  )
+  if (!total) {
+    return <p>No feedback given</p>
+  } else {
+    return (
+      <>
+        <p>Good {good}</p>
+        <p>Neutral {neutral}</p>
+        <p>Bad {bad}</p>
+        <p>All {total}</p>
+        <p>Average {(good + bad * -1) / total}</p>
+        <p>Positive {
+          total > 0 ? good / total : 'Try add feedback'
+        }</p>
+      </>
+    )
+  }
 }
 
 const App = () => {
