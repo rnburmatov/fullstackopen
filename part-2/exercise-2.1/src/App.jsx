@@ -5,6 +5,8 @@ const Part = ({ part }) =>
     {part.name} {part.exercises}
   </p>
 
+  const Total = ({parts}) => <p>Total of {parts.reduce((acc, part) => acc += part.exercises, 0)} exercises</p>
+
 const Content = ({ parts }) => 
   <>
     {parts.map(part => <Part key={part.exercises} part={part}/>)}     
@@ -15,6 +17,7 @@ const Course = ({course}) => {
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
