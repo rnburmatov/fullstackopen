@@ -8,7 +8,12 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setPersons(persons.concat({name: newName}))
+    const doubles = persons.filter(person => person.name === newName);
+    if (doubles.length > 0) {
+      alert(`${newName} is already added!`)
+    } else {
+      setPersons(persons.concat({name: newName}));
+    }
   }
   
   const handleNameChange = (e) => {
@@ -24,7 +29,7 @@ const App = () => {
           <input type="text" id='fullName' value={newName} onChange={handleNameChange}/>
         </div>
         <div>
-          <button type='submit' onClick={handleFormSubmit}>Add</button>
+          <button type='submit'>Add</button>
         </div>
       </form>
       <h2>Numbers</h2>
