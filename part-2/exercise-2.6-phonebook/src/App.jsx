@@ -46,8 +46,11 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    entriesServices.deleteItem(id);
-    setPersons(persons.filter(person => person.id !== id));
+    const confirmDelete = confirm('Do you want to delete this entry?');
+    if (confirmDelete) {
+      entriesServices.deleteItem(id);
+      setPersons(persons.filter(person => person.id !== id));
+    }
   }
 
   return (
