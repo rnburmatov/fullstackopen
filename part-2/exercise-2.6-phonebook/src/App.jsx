@@ -20,15 +20,21 @@ const App = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const doubleNames = persons.filter(person => person.name === newName);
+    const url = `http://localhost:3001/persons`;
+    const newEntry = {
+      name: newName,
+      number: newNumber
+    }
 
     if (doubleNames.length > 0) {
-      alert(`${newName} is already added!`)
-    } else {
-      const url = `http://localhost:3001/persons`;
-      const newEntry = {
-        name: newName,
-        number: newNumber
+      const confirmedChange = confirm(`${newName} is already added! Do you want to change number?`);
+      if (confirmedChange) {
+        entriesServices.change(doubleNames[0].id, newEntry).then(
+          changedEntry => setPersons(persons.map(p => p.id !== doubleNames[0].id ? p : changedEntry))
+        )
+
       }
+    } else {
       entriesServices.create(newEntry).then(returnedNewEntry => setPersons(persons.concat(returnedNewEntry)))
     }
   }
@@ -51,6 +57,10 @@ const App = () => {
       entriesServices.deleteItem(id);
       setPersons(persons.filter(person => person.id !== id));
     }
+  }
+
+  const handlePersonChange = (id) => {
+
   }
 
   return (
