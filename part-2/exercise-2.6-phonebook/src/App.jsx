@@ -22,11 +22,14 @@ const App = () => {
     if (doubleNames.length > 0) {
       alert(`${newName} is already added!`)
     } else {
-      setPersons(persons.concat({
+      const url = `http://localhost:3001/persons`;
+      const newEntry = {
         name: newName,
-        number: newNumber,
-        id: newName
-      }));
+        number: newNumber
+      }
+      axios.post(url, newEntry).then(response => {
+        setPersons(persons.concat(response.data))
+      })
     }
   }
   
