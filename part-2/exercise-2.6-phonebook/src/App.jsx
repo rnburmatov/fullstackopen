@@ -7,6 +7,7 @@ import Filter from './components/Filter';
 import Form from './components/Form';
 import List from './components/List';
 import Added from './components/Added';
+import Error from './components/Error';
 
 import entriesServices from './services/entriesServices';
 
@@ -16,6 +17,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [added, setAdded] = useState(null);
+  const [errorText, setErrorText] = useState(null);
 
   useEffect(() => {
     const newPersons = entriesServices.getAll().then(initialPersons => setPersons(initialPersons));
@@ -35,16 +37,27 @@ const App = () => {
       if (confirmedChange) {
         entriesServices.change(doubleNames[0].id, newEntry).then(
           changedEntry => setPersons(persons.map(p => p.id !== doubleNames[0].id ? p : changedEntry))
-        )
+        ).catch(error => {
+          setAdded(null);
+          setErrorText('Already deleted');
+          setTimeout(() => {
+            setErrorText(null);
+          }, 5000)
+        })
+        setAdded(newName);
+        setTimeout(() => {
+        setAdded(null);
+        }, 3000);
       }
     } else {
       entriesServices.create(newEntry).then(returnedNewEntry => setPersons(persons.concat(returnedNewEntry)))
+      setAdded(newName);
+      setTimeout(() => {
+      setAdded(null);
+      }, 3000);
     }
 
-    setAdded(newName);
-    setTimeout(() => {
-      setAdded(null);
-    }, 3000);
+    
 
     setNewName('');
     setNewNumber('');
@@ -70,15 +83,12 @@ const App = () => {
     }
   }
 
-  const handlePersonChange = (id) => {
-
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilter={handleFilter} />
       <Added name={added}/>
+      <Error message={errorText} />
 
       <h2>Add new entry</h2>
       <Form handleFormSubmit={handleFormSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />

@@ -7,23 +7,13 @@
     },
     {
       "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
+      "number": "666-6666666",
+      "id": 8
     },
     {
       "name": "Dan Abramov",
-      "number": "012-3456789",
-      "id": 5
-    },
-    {
-      "name": "Daria Burmatova",
       "number": "111-1111111",
-      "id": 6
-    },
-    {
-      "name": "Roman Burmatov",
-      "number": "012-3456789",
-      "id": 7
+      "id": 9
     }
   ]
 }
