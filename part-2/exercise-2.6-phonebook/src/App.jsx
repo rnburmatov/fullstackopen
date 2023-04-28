@@ -5,6 +5,8 @@ import Filter from './components/Filter';
 import Form from './components/Form';
 import List from './components/List';
 
+import entriesServices from './services/entriesServices';
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
@@ -12,7 +14,7 @@ const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const promise = axios.get('http://localhost:3001/persons').then(response => setPersons(response.data))
+    const newPersons = entriesServices.getAll().then(initialPersons => setPersons(initialPersons));
   }, [])
 
   const handleFormSubmit = (e) => {
@@ -27,9 +29,7 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      axios.post(url, newEntry).then(response => {
-        setPersons(persons.concat(response.data))
-      })
+      entriesServices.create(newEntry).then(returnedNewEntry => setPersons(persons.concat(returnedNewEntry)))
     }
   }
   
