@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 
+import './main.css';
+
 import Filter from './components/Filter';
 import Form from './components/Form';
 import List from './components/List';
+import Added from './components/Added';
 
 import entriesServices from './services/entriesServices';
 
@@ -12,6 +15,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [added, setAdded] = useState(null);
 
   useEffect(() => {
     const newPersons = entriesServices.getAll().then(initialPersons => setPersons(initialPersons));
@@ -32,11 +36,18 @@ const App = () => {
         entriesServices.change(doubleNames[0].id, newEntry).then(
           changedEntry => setPersons(persons.map(p => p.id !== doubleNames[0].id ? p : changedEntry))
         )
-
       }
     } else {
       entriesServices.create(newEntry).then(returnedNewEntry => setPersons(persons.concat(returnedNewEntry)))
     }
+
+    setAdded(newName);
+    setTimeout(() => {
+      setAdded(null);
+    }, 3000);
+
+    setNewName('');
+    setNewNumber('');
   }
   
   const handleNameChange = (e) => {
@@ -67,6 +78,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilter={handleFilter} />
+      <Added name={added}/>
 
       <h2>Add new entry</h2>
       <Form handleFormSubmit={handleFormSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
