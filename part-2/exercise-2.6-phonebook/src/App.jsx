@@ -45,6 +45,11 @@ const App = () => {
     setFilter(e.target.value);
   }
 
+  const handleDelete = (id) => {
+    entriesServices.deleteItem(id);
+    setPersons(persons.filter(person => person.id !== id));
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -54,7 +59,7 @@ const App = () => {
       <Form handleFormSubmit={handleFormSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
       <h2>Numbers</h2>
-      <List persons={persons} filter={filter} />
+      <List persons={persons} filter={filter} deleteHandler={handleDelete}/>
     </div>
   )
 }

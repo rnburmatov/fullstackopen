@@ -12,7 +12,12 @@ const create = (entry) => {
   return request.then(response => response.data);
 }
 
+const deleteItem = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+}
+
 export default {
   getAll,
-  create
+  create,
+  deleteItem
 }
