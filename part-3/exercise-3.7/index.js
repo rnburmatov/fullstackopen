@@ -1,6 +1,12 @@
 const express = require('express');
 const app = express();
 
+const morgan = require('morgan');
+morgan.token('body', (req, res) => {
+  return JSON.stringify(req.body)
+})
+app.use(morgan(':method :url :body'));
+
 app.use(express.json());
 
 let persons = [
@@ -74,6 +80,13 @@ app.post('/api/persons', (req, res) => {
   persons = persons.concat(person);
   res.json(person);
 })
+
+// Middleware
+const unknownEndpoint = (req, res) => {
+  response.status(404).send({error: 'Unknown Endpoint'})
+}
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT);
