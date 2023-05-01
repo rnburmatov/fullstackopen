@@ -32,5 +32,19 @@ app.get('/api/info', (request, response) => {
   response.send(`<div><p>Phonebook has info for ${persons.length} people</p><p>${new Date().toISOString()}</p></div>`);
 })
 
+app.get('/api/persons/:id', (req, res) => {
+  const id = +req.params.id;
+  const person = persons.find(person => person.id === id);
+
+  person ? res.json(person) : res.status(404).end();
+})
+
+app.delete('/api/persons/:id', (req, res) => {
+  const id = +req.params.id;
+  persons = persons.filter(person => person.id !== id);
+
+  res.status(201).end();
+})
+
 const PORT = 3001;
 app.listen(PORT);
