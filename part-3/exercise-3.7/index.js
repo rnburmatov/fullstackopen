@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   { 
     "id": 1,
@@ -44,6 +46,33 @@ app.delete('/api/persons/:id', (req, res) => {
   persons = persons.filter(person => person.id !== id);
 
   res.status(201).end();
+})
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body;
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: 'Name is missing'
+    })
+  }
+
+  const doubleNames = persons.filter(person => person.name.includes(body.name));
+
+  if (doubleNames.length > 0) {
+    return res.status(400).json({
+      error: 'Name is already in a list'
+    })
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: Math.random() * 1000
+  }
+
+  persons = persons.concat(person);
+  res.json(person);
 })
 
 const PORT = 3001;
